@@ -7,5 +7,9 @@ import alpinejs from '@astrojs/alpinejs';
 
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind(), alpinejs()]
+  integrations: [tailwind(), alpinejs()],
+  build: {
+    // Exemple : Générer `page.html` au lieu de `page/index.html` pendant la construction.
+    format: 'file'
+  },
 });
