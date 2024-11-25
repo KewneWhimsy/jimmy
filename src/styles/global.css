@@ -1,0 +1,19 @@
+
+:root {
+    /* Couleurs par défaut */
+    --textcolor: black; 
+    --bgcolor: white;
+    --midcolor: gray;
+}
+  
+@media (prefers-color-scheme: dark) {
+    :root {
+    /* Mode sombre */
+    --textcolor: white; 
+    --bgcolor: black;
+    }
+}
+
+body{
+    @apply text-text bg-bg transition-colors duration-300;
+}

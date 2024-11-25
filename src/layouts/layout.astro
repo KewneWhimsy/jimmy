@@ -1,0 +1,53 @@
+---
+// Définit une interface TypeScript pour les propriétés du composant.
+interface Props {
+  title: string; //  Spécifie que la propriété title doit être une chaîne de caractères.
+}
+
+const { title } = Astro.props; // Extrait 'title' définit lors de l'utilisation du composant.
+import Header from './header.astro';
+import Footer from './footer.astro';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <!-- Encodage des caractères pour le document -->
+    <meta charset="UTF-8" />
+    <!-- adapte la largeur de la page à celle de l'écran, force le zoom initial à 100% -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Indique le générateur du site (Astro) -->
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Fournit une description du site pour les moteurs de recherche -->
+    <meta name="description" content="Jimmy" />
+
+    <!-- îcone de l'onglet du navigateur et google -->
+    <link rel="icon" type="image/svg" href="favicon.svg" />
+
+    <!-- Définit le titre de la page par une valeur à lui donner quand on utilise ce composant (Props)-->
+    <title>{title}</title>
+    
+    <!-- Script htmx -->
+    <script
+      defer
+      src="https://unpkg.com/htmx.org@2.0.2"
+      integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
+      crossorigin="anonymous"></script>
+    <!-- Configure htmx pour autoriser les requêtes vers des domaines externes + Transition pendant les swaps  -->
+    <meta name="htmx-config" content='{"selfRequestsOnly":false,"globalViewTransitions":true}' />
+
+  </head>
+
+  <!-- ajout de classes à body et main pour que toutes les pages prennent au minimum la taille de l'écran avec le footer en bas -->
+  <body class="min-h-screen flex flex-col">
+    <div class="flex-1">
+      <Header />
+
+      <slot /> <!-- Zone HTML à l'intérieur du composant, où le contenu spécifique de chaque page sera inséré -->
+
+    </div>
+    <Footer />
+  </body>
+</html>
