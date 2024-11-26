@@ -1,0 +1,56 @@
+---
+import Layout from "../layouts/layout.astro"
+---
+
+<Layout title="Contact">
+	<main>
+          <section>
+            <div class="mx-auto max-w-screen-md px-4 py-16 sm:px-6 lg:px-8">
+              
+          
+                <div class="rounded-lg p-8 lg:col-span-3 lg:p-12">
+                  <form action="#" class="space-y-4">
+                    <div>
+                      <label class="sr-only" for="name">Name</label>
+                      <input
+                        class="w-full rounded-lg p-3 text-sm border border-text"
+                        placeholder="Name"
+                        type="text"
+                        id="name"
+                      />
+                    </div>
+                    <div>
+                        <label class="sr-only" for="email">Email</label>
+                        <input
+                          class="w-full rounded-lg p-3 text-sm border border-text"
+                          placeholder="Email address"
+                          type="email"
+                          id="email"
+                        />
+                      </div>
+                    <div>
+                      <label class="sr-only" for="message">Message</label>
+          
+                      <textarea
+                        class="w-full rounded-lg p-3 text-sm border border-text"
+                        placeholder="Message"
+                        rows="8"
+                        id="message"
+                      ></textarea>
+                    </div>
+          
+                    <div class="mt-4">
+                      <button
+                        type="submit"
+                        class="inline-block w-full rounded-lg border-text border px-5 py-3 font-medium sm:w-auto"
+                      >
+                        Send Enquiry
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+	</main>
+</Layout>

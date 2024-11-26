@@ -1,9 +1,10 @@
 
 :root {
     /* Couleurs par défaut */
-    --textcolor: black; 
+    --textcolor: rgb(0, 0, 0);
     --bgcolor: white;
-    --midcolor: gray;
+    --midcolor: #ff9100;
+    --btncolor: #ff6648;
 }
   
 @media (prefers-color-scheme: dark) {
@@ -12,8 +13,16 @@
     --textcolor: white; 
     --bgcolor: black;
     }
+    body{
+        background: linear-gradient(to bottom, #1e1f25, #101012);
+       /* background: linear-gradient(to bottom, #112627, #112127); */
+        background: linear-gradient(to bottom, #111a27, #1f1127);
+    }
 }
 
 body{
-    @apply text-text bg-bg transition-colors duration-300;
+    @apply text-text bg-white transition-colors duration-300;
+}
+.btn{
+    @apply bg-btn rounded-lg text-white transition-colors duration-300 hover:bg-mid flex justify-center px-5 py-3;
 }
