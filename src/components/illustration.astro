@@ -1,0 +1,51 @@
+---
+import { getCollection } from 'astro:content';
+
+// Charge toutes les illustrations
+const illustrations = await getCollection('illu');
+---
+
+<div x-data="{ openModal: false, currentImage: '', currentTitle: '' }">
+  <!-- Galerie -->
+  <div class="grid grid-cols-[repeat(auto-fit,_minmax(380px,_1fr))] gap-4 place-items-center">
+    {illustrations.map((illu) => (
+      <div class="overflow-hidden">
+        <img 
+          src={illu.data.image} 
+          alt={illu.data.alt} 
+          class="cursor-pointer h-auto w-full object-cover"
+          data-image={illu.data.image}
+          data-title={illu.data.title}
+          x-on:click="
+            openModal = true;
+            currentImage = $event.target.getAttribute('data-image');
+            currentTitle = $event.target.getAttribute('data-title');
+          "
+          loading="lazy"
+        />
+
+      </div>
+    ))}
+  </div>
+
+  <!-- Modal -->
+  <div 
+    x-show="openModal" 
+    class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+    @click.self="openModal = false"
+    
+  >
+    <div class="bg-white rounded-lg shadow-lg max-w-2xl w-full overflow-hidden">
+      <img :src="currentImage" alt="" class="w-full h-auto object-cover" />
+      <div class="p-4">
+        <h3 x-text="currentTitle" class="text-lg font-bold text-center"></h3>
+      </div>
+      <button 
+        class="absolute top-4 right-4 text-white bg-black rounded-full p-2"
+        @click="openModal = false"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+</div>
