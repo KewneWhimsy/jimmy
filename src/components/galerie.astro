@@ -1,13 +1,25 @@
+<!-- déclaration d'un tableau d'images, préchargement des images. Fonction de navigation par index et gestion claviers pour le modal -->
 <div 
   x-data="{ 
-    openModal: false, 
-    currentImageIndex: null, 
+    openModal: false,
+    currentImageIndex: null,
     images: [
       { src: '/illu/the_planet_tamer.webp', alt: 'wild witch taming the planet', title: 'The Planet Tamer' },
       { src: '/illu/soft_bathing.png', alt: 'women, head down, taking a dreamlike bath', title: 'soft bathing' },
-      { src: 'illu/the_woman_with_the_diadem.png', alt: 'colorful elegant women with a diadem', title: 'The woman with the diadem' },
-      { src: 'illu/boxeur.png', alt: 'eagle head boxer', title: 'Boxeur' },
+      { src: '/illu/the_woman_with_the_diadem.png', alt: 'colorful elegant women with a diadem', title: 'The Woman with the Diadem' },
+      { src: '/illu/boxeur.png', alt: 'eagle head boxer', title: 'Boxeur' },
     ],
+    preloadImages() {
+      this.images.forEach(image => {
+        const img = new Image();
+        img.src = image.src;
+      });
+    },
+    navigate(direction) {
+      if (this.currentImageIndex !== null) {
+        this.currentImageIndex = (this.currentImageIndex + direction + this.images.length) % this.images.length;
+      }
+    },
     handleKeydown(event) {
       if (this.openModal) {
         if (event.key === 'ArrowLeft') {
@@ -18,14 +30,18 @@
           this.openModal = false;
         }
       }
-    }
+    },
   }"
+  x-init="preloadImages()"
   @keydown.window="handleKeydown($event)"
 >
-  <!-- Galerie -->
+  <!-- Galerie : dispose autant d'images que dans le tableau, charge les données du modale au mouse:hover puis l'ouvre au click -->
   <div class="grid grid-cols-[repeat(auto-fit,_minmax(380px,_1fr))] gap-4 place-items-center">
+
     <template x-for="(image, index) in images" :key="index">
+
       <div class="overflow-hidden">
+
         <img
           :src="image.src"
           :alt="image.alt"
@@ -36,58 +52,56 @@
           x-on:mouseover="currentImageIndex = index"
           loading="lazy"
         />
+        <!-- loading lazy active le chargement différé des images. (performances) -->
+
       </div>
+
     </template>
+
   </div>
 
-  <!-- Modale -->
+  <!-- Modal -->
   <div
-    @click.self="openModal = false"
     x-show="openModal"
     x-transition.opacity
     class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50"
-    
+    @click.self="openModal = false"
   >
+
     <div class="overflow-hidden flex flex-col">
-      <!-- Bouton précédent -->
+
+      <!-- Bouton pour naviguer vers l'image précédente -->
       <button
         class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white rounded-full p-2"
-        @click="currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : images.length - 1"
+        @click="navigate(-1)"
       >
         &#x25C0; <!-- Flèche gauche -->
       </button>
 
-      <!-- Image actuelle dans le modal -->
+      <!-- x-bind permet de lier l'attribut src à l'image actuelle : mise à jour automatique si l'image change -->
       <img
-        x-show="currentImageIndex !== null"
-        x-bind:src="images[currentImageIndex].src"
-        :alt="images[currentImageIndex].alt"
-        class="w-full max-h-[84vh] h-auto object-contain"
+        x-bind:src="images[currentImageIndex]?.src"
+        :alt="images[currentImageIndex]?.alt"
+        class="w-full max-h-[80vh] h-auto object-contain"
       />
 
-      <!-- Bouton suivant -->
+      <!-- Bouton pour naviguer vers l'image suivante -->
       <button
         class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white rounded-full p-2"
-        @click="currentImageIndex = (currentImageIndex < images.length - 1) ? currentImageIndex + 1 : 0"
+        @click="navigate(1)"
       >
         &#x25B6; <!-- Flèche droite -->
       </button>
 
-      <!-- Titre -->
+      <!-- x-text remplace le texte de <h3> par le titre de l'image actuelle-->
       <div class="p-4 overflow-auto max-h-[20vh]">
         <h3
-          x-text="images[currentImageIndex].title"
+          x-text="images[currentImageIndex]?.title"
           class="text-lg font-bold text-center text-white"
         ></h3>
       </div>
 
-      <!-- Bouton pour fermer -->
-      <button
-        class="absolute top-4 right-4 text-white bg-mid rounded-full p-2"
-        @click="openModal = false"
-      >
-        &times;
-      </button>
     </div>
+
   </div>
 </div>
