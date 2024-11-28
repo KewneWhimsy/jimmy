@@ -22,7 +22,7 @@ import '../styles/global.css';
     <meta name="generator" content={Astro.generator} />
 
     <!-- Fournit une description du site pour les moteurs de recherche -->
-    <meta name="description" content="Jimmy" />
+    <meta name="description" content="Djim : 3D, illustration et fresque murale" />
 
     <!-- îcone de l'onglet du navigateur et google -->
     <link rel="icon" type="image/png" href="djim.png"/>
@@ -35,7 +35,8 @@ import '../styles/global.css';
       defer
       src="https://unpkg.com/htmx.org@2.0.2"
       integrity="sha384-Y7hw+L/jvKeWIRRkqWYfPcvVxHzVzn5REgzbawhxAuQGwX1XWe70vji+VSeHOThJ"
-      crossorigin="anonymous"></script>
+      crossorigin="anonymous">
+    </script>
     <!-- Configure htmx pour autoriser les requêtes vers des domaines externes + Transition pendant les swaps  -->
     <meta name="htmx-config" content='{"selfRequestsOnly":false,"globalViewTransitions":true}' />
 
@@ -43,7 +44,7 @@ import '../styles/global.css';
 
   </head>
 
-  <!-- ajout de classes à body et main pour que toutes les pages prennent au minimum la taille de l'écran avec le footer en bas -->
+  <!-- ajout de classes à body et main pour assurer que les pages prennent au minimum la taille de l'écran avec le footer en bas -->
   <body class="min-h-screen flex flex-col">
     <div class="flex-1">
       <Header />

@@ -1,5 +1,5 @@
 <!-- déclaration d'un tableau d'images, préchargement des images. Fonction de navigation par index et gestion claviers pour le modal -->
-<div 
+<section 
   x-data="{ 
     openModal: false,
     currentImageIndex: null,
@@ -51,6 +51,7 @@
           "
           x-on:mouseover="currentImageIndex = index"
           loading="lazy"
+          transition:name="image.src"
         />
         <!-- loading lazy active le chargement différé des images. (performances) -->
 
@@ -64,15 +65,15 @@
   <div
     x-show="openModal"
     x-transition.opacity
-    class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50"
+    class="fixed inset-0 bg-black bg-opacity-95 flex flex-col items-center justify-center z-50"
     @click.self="openModal = false"
   >
 
-    <div class="overflow-hidden flex flex-col">
+    <div class="overflow-hidden">
 
-      <!-- Bouton pour naviguer vers l'image précédente -->
+      <!-- Bouton pour naviguer vers l'image précédente. mobile : invisible et ajout de padding pour avoir une zone de click plus large -->
       <button
-        class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white rounded-full md:p-2 p-24 opacity-0 md:opacity-100 overflow-hidden"
         @click="navigate(-1)"
       >
         &#x25C0; <!-- Flèche gauche -->
@@ -85,23 +86,23 @@
         class="w-full max-h-[80vh] h-auto object-contain"
       />
 
-      <!-- Bouton pour naviguer vers l'image suivante -->
+      <!-- Bouton pour naviguer vers l'image suivante. "..." -->
       <button
-        class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white rounded-full md:p-2 p-24 opacity-0 md:opacity-100 overflow-hidden"
         @click="navigate(1)"
       >
         &#x25B6; <!-- Flèche droite -->
       </button>
 
-      <!-- x-text remplace le texte de <h3> par le titre de l'image actuelle-->
-      <div class="p-4 overflow-auto max-h-[20vh]">
-        <h3
-          x-text="images[currentImageIndex]?.title"
-          class="text-lg font-bold text-center text-white"
-        ></h3>
-      </div>
+    </div>
 
+    <!-- x-text remplace le texte de <h3> par le titre de l'image actuelle-->
+    <div class="p-4 overflow-auto max-h-[20vh]">
+      <h3
+        x-text="images[currentImageIndex]?.title"
+        class="text-lg font-bold text-center text-white"
+      ></h3>
     </div>
 
   </div>
-</div>
+</section>
