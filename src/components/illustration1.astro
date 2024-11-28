@@ -1,0 +1,90 @@
+---
+import { getCollection } from "astro:content";
+
+// L'interface 'Illustration' décrit la structure des données attendues pour chaque illustration.
+interface Illustration {
+  data: {
+    image: string;
+    alt: string;
+    title: string;
+  };
+}
+
+// La fonction 'getCollection' récupère toutes les illustrations depuis une collection nommée "illu".
+const illustrations: Illustration[] = await getCollection("illu");
+---
+
+<div x-data="{ openModal: false, currentImageUrl: null, currentTitle: ''}">
+  <!-- Galerie -->
+  <!-- Création d'une grille de cartes d'illustrations -->
+  <div
+    class="grid grid-cols-[repeat(auto-fit,_minmax(380px,_1fr))] gap-4 place-items-center"
+  >
+    {
+      illustrations.map((illu) => (
+        <div class="overflow-hidden">
+          <!-- Image individuelle -->
+          <img
+            src={illu.data.image}
+            alt={illu.data.alt}
+            class="cursor-pointer h-auto w-full object-cover"
+            data-title={illu.data.title}
+            x-on:click="
+              openModal = true;
+              currentTitle = $event.target.getAttribute('data-title');
+              currentImageUrl = $event.target.getAttribute('src'); // Référence directe à l'image
+            "
+            loading="lazy"
+            transition:persist
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Modal -->
+  <div
+    x-show="openModal"
+    style="display: none;"
+    class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50"
+    @click.self="openModal = false"
+  >
+    <div class="max-w-2xl w-full overflow-hidden flex flex-col">
+      <button
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        @click="navigate(-1)"
+      >
+        &#x25C0; <!-- Flèche gauche -->
+      </button>
+
+      <!-- Image affichée sans rechargement -->
+      
+        <img
+          :src="currentImageUrl" 
+          alt=""
+          class="w-full max-h-[80vh] h-auto object-contain"
+          transition:persist
+        />
+      
+
+      <button
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        @click="navigate(1)"
+      >
+        &#x25B6; <!-- Flèche droite -->
+      </button>
+      <div class="p-4 overflow-auto max-h-[20vh]">
+        <h3
+          x-text="currentTitle"
+          class="text-lg font-bold text-center text-white"
+        ></h3>
+      </div>
+      <button
+        class="absolute top-4 right-4 text-white bg-mid rounded-full p-2"
+        @click="openModal = false"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,93 @@
+<div 
+  x-data="{ 
+    openModal: false, 
+    currentImageIndex: null, 
+    images: [
+      { src: '/illu/the_planet_tamer.webp', alt: 'wild witch taming the planet', title: 'The Planet Tamer' },
+      { src: '/illu/soft_bathing.png', alt: 'women, head down, taking a dreamlike bath', title: 'soft bathing' },
+      { src: 'illu/the_woman_with_the_diadem.png', alt: 'colorful elegant women with a diadem', title: 'The woman with the diadem' },
+      { src: 'illu/boxeur.png', alt: 'eagle head boxer', title: 'Boxeur' },
+    ],
+    handleKeydown(event) {
+      if (this.openModal) {
+        if (event.key === 'ArrowLeft') {
+          this.currentImageIndex = (this.currentImageIndex > 0) ? this.currentImageIndex - 1 : this.images.length - 1;
+        } else if (event.key === 'ArrowRight') {
+          this.currentImageIndex = (this.currentImageIndex < this.images.length - 1) ? this.currentImageIndex + 1 : 0;
+        } else if (event.key === 'Escape') {
+          this.openModal = false;
+        }
+      }
+    }
+  }"
+  @keydown.window="handleKeydown($event)"
+>
+  <!-- Galerie -->
+  <div class="grid grid-cols-[repeat(auto-fit,_minmax(380px,_1fr))] gap-4 place-items-center">
+    <template x-for="(image, index) in images" :key="index">
+      <div class="overflow-hidden">
+        <img
+          :src="image.src"
+          :alt="image.alt"
+          class="cursor-pointer h-auto w-full object-cover"
+          x-on:click="
+            openModal = true;
+          "
+          x-on:mouseover="currentImageIndex = index"
+          loading="lazy"
+        />
+      </div>
+    </template>
+  </div>
+
+  <!-- Modale -->
+  <div
+    @click.self="openModal = false"
+    x-show="openModal"
+    x-transition.opacity
+    class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center z-50"
+    
+  >
+    <div class="overflow-hidden flex flex-col">
+      <!-- Bouton précédent -->
+      <button
+        class="absolute top-1/2 left-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        @click="currentImageIndex = (currentImageIndex > 0) ? currentImageIndex - 1 : images.length - 1"
+      >
+        &#x25C0; <!-- Flèche gauche -->
+      </button>
+
+      <!-- Image actuelle dans le modal -->
+      <img
+        x-show="currentImageIndex !== null"
+        x-bind:src="images[currentImageIndex].src"
+        :alt="images[currentImageIndex].alt"
+        class="w-full max-h-[84vh] h-auto object-contain"
+      />
+
+      <!-- Bouton suivant -->
+      <button
+        class="absolute top-1/2 right-4 transform -translate-y-1/2 text-white rounded-full p-2"
+        @click="currentImageIndex = (currentImageIndex < images.length - 1) ? currentImageIndex + 1 : 0"
+      >
+        &#x25B6; <!-- Flèche droite -->
+      </button>
+
+      <!-- Titre -->
+      <div class="p-4 overflow-auto max-h-[20vh]">
+        <h3
+          x-text="images[currentImageIndex].title"
+          class="text-lg font-bold text-center text-white"
+        ></h3>
+      </div>
+
+      <!-- Bouton pour fermer -->
+      <button
+        class="absolute top-4 right-4 text-white bg-mid rounded-full p-2"
+        @click="openModal = false"
+      >
+        &times;
+      </button>
+    </div>
+  </div>
+</div>

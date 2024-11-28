@@ -5,6 +5,7 @@ interface Props {
 }
 
 const { title } = Astro.props; // Extrait 'title' définit lors de l'utilisation du composant.
+import { ViewTransitions } from 'astro:transitions';
 import Header from './header.astro';
 import Footer from './footer.astro';
 import '../styles/global.css';
@@ -37,6 +38,8 @@ import '../styles/global.css';
       crossorigin="anonymous"></script>
     <!-- Configure htmx pour autoriser les requêtes vers des domaines externes + Transition pendant les swaps  -->
     <meta name="htmx-config" content='{"selfRequestsOnly":false,"globalViewTransitions":true}' />
+
+    <ViewTransitions />    
 
   </head>
 

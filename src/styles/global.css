@@ -26,3 +26,6 @@ body{
 .btn{
     @apply bg-btn rounded-lg text-white transition-colors duration-300 hover:bg-mid flex justify-center px-5 py-3;
 }
+img{
+    transition: all;
+}
